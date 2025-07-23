@@ -77,18 +77,17 @@ export const MainSection: React.FC<Props> = ({
           key={todo.id}
           className={`todo ${todo.completed ? 'completed' : 'active'}`}
         >
-          <label className="todo__status-label" htmlFor={`todo-${todo.id}`}>
+          <label className="todo__status-label">
             {/* можна додати іконку статусу тут, якщо треба */}
+            <input
+              id={`todo-${todo.id}`}
+              onClick={() => toggleTodo(todo.id, todo.completed)}
+              data-cy="TodoStatus"
+              type="checkbox"
+              className="todo__status"
+              checked={todo.completed}
+            />
           </label>
-
-          <input
-            id={`todo-${todo.id}`}
-            onClick={() => toggleTodo(todo.id, todo.completed)}
-            data-cy="TodoStatus"
-            type="checkbox"
-            className="todo__status"
-            checked={todo.completed}
-          />
 
           <span data-cy="TodoTitle" className="todo__title">
             {todo.title}
@@ -98,10 +97,14 @@ export const MainSection: React.FC<Props> = ({
             type="button"
             className={`todo__remove ${!hover ? 'hidden' : ''}`}
             data-cy="TodoDelete"
-            onClick={() => deleteButton(todo.id)}
+            onClick={() => {
+              deleteButton(todo.id);
+            }}
           >
             ×
           </button>
+
+          {/* overlay will cover the todo while it is being deleted or updated */}
 
           <div
             data-cy="TodoLoader"
